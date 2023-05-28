@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.prova.triage.dto.PazienteDTO;
 import it.prova.triage.model.Paziente;
 import it.prova.triage.service.PazienteService;
+import it.prova.triage.web.api.exception.IdNotNullForInsertException;
 
 @RestController
 @RequestMapping("api/paziente")
@@ -24,31 +26,35 @@ public class PazienteController {
 	
 	
 	@GetMapping
-	public List<Paziente> getAll() {
-		return pazienteService.listAllPazienti();
+	public List<PazienteDTO> getAll() {
+		return PazienteDTO.createPazienteDTOListFromModelList(pazienteService.listAllPazienti());
 	}
 
 	
 	@GetMapping("/{id}")
-	public Paziente caricaPaziente(@PathVariable(required = true) Long idInput) {
-		return pazienteService.caricaSingoloPaziente(idInput);
+	public PazienteDTO caricaPaziente(@PathVariable(required = true) Long idInput) {
+		return  PazienteDTO.buildPazienteDTOFromModel(pazienteService.caricaSingoloPaziente(idInput));
 	}
 	
 	
 	@PostMapping("/inserisciNuovo")
-	public Paziente createNewPaziente(@RequestBody Paziente pazienteInput) {
-		return pazienteService.inserisciNuovo(pazienteInput);
+	public PazienteDTO createNewPaziente(@RequestBody Paziente pazienteInput) {
+		if (pazienteInput.getId() != null)
+			throw new IdNotNullForInsertException("Non è ammesso fornire un id per la creazione");
+
+		Paziente pazienteInserito = pazienteService.inserisciNuovo(pazienteInput);
+		return PazienteDTO.buildPazienteDTOFromModel(pazienteInserito);
 	}
 	
 	@PutMapping("/{id}")
-	public Paziente updatePaziente(@RequestBody Paziente pazienteInput, @PathVariable Long id) {
+	public PazienteDTO updatePaziente(@RequestBody Paziente pazienteInput, @PathVariable Long id) {
 		Paziente pazienteToUpdate = pazienteService.caricaSingoloPaziente(id);
 		pazienteToUpdate.setNome(pazienteInput.getNome());
 		pazienteToUpdate.setCognome(pazienteInput.getCognome());
 		pazienteToUpdate.setCodiceFiscale(pazienteInput.getCodiceFiscale());
 		pazienteToUpdate.setDataRegistrazione(pazienteInput.getDataRegistrazione());
 		pazienteToUpdate.setStato(pazienteInput.getStato());
-		return pazienteService.aggiorna(pazienteToUpdate);
+		return PazienteDTO.buildPazienteDTOFromModel(pazienteService.aggiorna(pazienteToUpdate));
 	}
 	
 	@DeleteMapping("/{id}")

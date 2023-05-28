@@ -25,7 +25,7 @@ public class PazienteDTO {
 	private StatoPaziente stato;
 	private String codiceDottore;
 	
-	public Paziente buildRegistaModel() {
+	public Paziente buildPazienteModel() {
 		return Paziente.builder().nome(this.nome).cognome(this.cognome).codiceFiscale(this.codiceFiscale).dataRegistrazione(this.dataRegistrazione).stato(this.stato).build();
 	}
 
