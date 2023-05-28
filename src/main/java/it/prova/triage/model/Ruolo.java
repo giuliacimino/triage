@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "ruolo")
 public class Ruolo {
 	public static final String ROLE_ADMIN = "ROLE_ADMIN";
-	public static final String ROLE_CLASSIC_USER = "ROLE_SUB_OPERATOR";
+	public static final String ROLE_SUB_OPERATOR = "ROLE_SUB_OPERATOR";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
