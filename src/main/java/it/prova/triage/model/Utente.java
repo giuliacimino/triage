@@ -1,7 +1,9 @@
 package it.prova.triage.model;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,9 +52,10 @@ public class Utente {
 	@Enumerated(EnumType.STRING)
 	private StatoUtente stato;
 	
+	@Builder.Default
 	@ManyToMany
 	@JoinTable(name = "utente_ruolo", joinColumns = @JoinColumn(name = "utente_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ruolo_id", referencedColumnName = "ID"))
-	private Set<Ruolo> ruoli;
+	private Set<Ruolo> ruoli= new HashSet<>(0);
 	
 	public boolean isAttivo() {
 		return this.stato != null && this.stato.equals(StatoUtente.ATTIVO);

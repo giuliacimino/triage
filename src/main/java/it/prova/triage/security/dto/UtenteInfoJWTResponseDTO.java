@@ -18,6 +18,17 @@ public class UtenteInfoJWTResponseDTO {
 		this.email = email;
 		this.roles = roles;
 	}
+	
+	
+
+	public UtenteInfoJWTResponseDTO(String nome, String cognome, String username, List<String> roles) {
+		this.nome = nome;
+		this.cognome = cognome;
+		this.username = username;
+		this.roles = roles;
+	}
+
+
 
 	public String getTokenType() {
 		return type;

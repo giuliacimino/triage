@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import it.prova.triage.model.StatoUtente;
 import it.prova.triage.model.Utente;
 import it.prova.triage.repository.utente.UtenteRepository;
 
+@Service
 public class UtenteServiceImpl implements UtenteService{
 	
 	@Autowired
@@ -37,7 +39,7 @@ public class UtenteServiceImpl implements UtenteService{
 	}
 
 	@Override
-	public void aggiorna(Utente utenteInstance) {
+	public Utente aggiorna(Utente utenteInstance) {
 		// deve aggiornare solo nome, cognome, username, ruoli
 				Utente utenteReloaded = repository.findById(utenteInstance.getId()).orElse(null);
 				if (utenteReloaded == null)
@@ -46,16 +48,16 @@ public class UtenteServiceImpl implements UtenteService{
 				utenteReloaded.setCognome(utenteInstance.getCognome());
 				utenteReloaded.setUsername(utenteInstance.getUsername());
 				utenteReloaded.setRuoli(utenteInstance.getRuoli());
-				repository.save(utenteReloaded);
+				return repository.save(utenteReloaded);
 		
 	}
 
 	@Override
-	public void inserisciNuovo(Utente utenteInstance) {
+	public Utente inserisciNuovo(Utente utenteInstance) {
 		utenteInstance.setStato(StatoUtente.CREATO);
 		utenteInstance.setPassword(passwordEncoder.encode(utenteInstance.getPassword()));
 		utenteInstance.setDataRegistrazione(LocalDate.now());
-		repository.save(utenteInstance);
+		return repository.save(utenteInstance);
 		
 	}
 

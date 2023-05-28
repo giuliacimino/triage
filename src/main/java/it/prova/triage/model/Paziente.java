@@ -37,6 +37,9 @@ public class Paziente {
 	@Column(name = "dataregistrazione")
 	private LocalDate dataRegistrazione;
 	
+	@Column(name = "codiceDottore")
+	private String codiceDottore;
+	
 	@Enumerated(EnumType.STRING)
 	private StatoPaziente stato;
 

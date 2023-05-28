@@ -2,6 +2,7 @@ package it.prova.triage.dto;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import it.prova.triage.model.Ruolo;
@@ -48,6 +49,11 @@ public class UtenteDTO {
 
 		return result;
 	}
+	
+	
+	public static List<UtenteDTO> createUtenteDTOListFromModelList(List<Utente> modelList) {
+		return modelList.stream().map(entity -> UtenteDTO.buildUtenteDTOFromModel(entity)).collect(Collectors.toList());
+		}
 	
 	
 
